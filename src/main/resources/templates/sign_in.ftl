@@ -11,7 +11,7 @@
 <div class="container mt-5">
     <div class="col-md-5 mx-auto">
         <h2 class="text-center my3">Войти</h2>
-        <form action="/signup" method="post">
+        <form action="/signin" method="post" name="loginDto">
             <div class="row">
                 <div class="mb-3 col-sm-6">
                     <label class="form-label">Логин</label>

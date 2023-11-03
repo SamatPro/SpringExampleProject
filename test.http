@@ -1,0 +1,17 @@
+POST localhost:8080/signin HTTP/1.1
+Content-Type: application/json
+
+
+{
+  "login": "tovmas@mail.ru",
+  "password": "qwerty"
+}
+
+
+###
+
+GET localhost:8080/profile HTTP/1.1
+Cookie: auth=8df0b379-c9d4-4888-8f5b-44ba2fcf5e78
+
+
+

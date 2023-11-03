@@ -6,6 +6,7 @@ import ru.study.spring.model.enums.State;
 
 import javax.persistence.*;
 import java.time.OffsetDateTime;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -23,7 +24,7 @@ public class User {
 
     private String login;
     private String passwordHash;
-    
+
     private String firstName;
     private String lastName;
     private OffsetDateTime birthday;
@@ -31,4 +32,7 @@ public class User {
     private State state;
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    @OneToMany
+    private List<Auth> auths;
 }

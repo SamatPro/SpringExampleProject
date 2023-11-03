@@ -2,15 +2,19 @@ package ru.study.spring.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import ru.study.spring.dto.LoginDto;
 import ru.study.spring.dto.UserDto;
+import ru.study.spring.model.User;
 import ru.study.spring.service.UserService;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Optional;
 
 @Controller
 public class UserController {
@@ -38,6 +42,29 @@ public class UserController {
         userDto.setPassword(password);
         userService.signUp(userDto);
         return "sign_in";
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/signin")
+    public ModelAndView signInPage(ModelAndView modelAndView) {
+        modelAndView.setViewName("sign_in");
+        return modelAndView;
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/signin")
+    public String signIn(
+            @ModelAttribute("loginDto") LoginDto loginDto,
+                HttpServletResponse httpServletResponse
+    ) {
+
+        Optional<String> cookieOptional = userService.login(loginDto);
+
+        if (cookieOptional.isPresent()) {
+            Cookie cookie = new Cookie("auth", cookieOptional.get());
+            cookie.setMaxAge(60 * 60 * 24 * 30);
+            httpServletResponse.addCookie(cookie);
+            return "redirect:/profile";
+        }
+        return "redirect:/signin";
     }
 
 }
