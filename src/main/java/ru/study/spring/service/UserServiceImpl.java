@@ -1,6 +1,9 @@
 package ru.study.spring.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.study.spring.dto.LoginDto;
@@ -27,6 +30,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private AuthRepository authRepository;
 
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
     @Override
     public void signUp(UserDto userDto) {
 
@@ -49,6 +55,13 @@ public class UserServiceImpl implements UserService {
         if (userOptional.isPresent()) {
             User user = userOptional.get();
             if (passwordEncoder.matches(loginDto.getPassword(), user.getPasswordHash())) {
+
+                Authentication authentication = authenticationManager.authenticate(
+                        new UsernamePasswordAuthenticationToken(
+                                loginDto.getLogin(),
+                                loginDto.getPassword()
+                        )
+                );
 
                 String cookieValue = UUID.randomUUID().toString();
 
