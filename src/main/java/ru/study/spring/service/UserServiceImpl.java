@@ -13,6 +13,7 @@ import ru.study.spring.model.User;
 import ru.study.spring.model.enums.Role;
 import ru.study.spring.repository.AuthRepository;
 import ru.study.spring.repository.UserRepository;
+import ru.study.spring.security.provider.JwtProvider;
 
 import javax.servlet.http.Cookie;
 import java.util.Optional;
@@ -32,6 +33,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private JwtProvider jwtProvider;
 
     @Override
     public void signUp(UserDto userDto) {
@@ -63,20 +67,13 @@ public class UserServiceImpl implements UserService {
                         )
                 );
 
-                String cookieValue = UUID.randomUUID().toString();
+                String jwtToken = jwtProvider.generateToken(authentication);
 
-                Auth auth = Auth.builder()
-                        .user(user)
-                        .cookieValue(cookieValue)
-                        .build();
-
-                authRepository.save(auth);
-
-                return Optional.of(cookieValue);
+                return Optional.of(jwtToken);
             }
         }
 
-        return Optional.empty();
+        throw new IllegalArgumentException("Login attempt failed");
     }
 
     @Override

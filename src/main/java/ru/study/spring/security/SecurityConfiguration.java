@@ -14,7 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import ru.study.spring.security.filter.CookieAuthenticationFilter;
+import ru.study.spring.security.filter.JwtAuthenticationFilter;
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
@@ -25,15 +25,15 @@ public class SecurityConfiguration {
     private UserDetailsService userDetailsService;
 
     @Bean
-    public CookieAuthenticationFilter cookieAuthenticationFilter() {
-        return new CookieAuthenticationFilter();
+    public JwtAuthenticationFilter jwtAuthenticationFilter() {
+        return new JwtAuthenticationFilter();
     }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf()
                 .disable()
-                .addFilterBefore(cookieAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
                 .antMatchers("/profile").authenticated()
                 .antMatchers("/signin", "/signup").permitAll()

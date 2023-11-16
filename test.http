@@ -1,6 +1,5 @@
-POST localhost:8080/signin HTTP/1.1
+POST localhost:8080/sign_in HTTP/1.1
 Content-Type: application/json
-
 
 {
   "login": "tovmas@mail.ru",
@@ -11,7 +10,7 @@ Content-Type: application/json
 ###
 
 GET localhost:8080/profile HTTP/1.1
-Cookie: auth=8df0b379-c9d4-4888-8f5b-44ba2fcf5e78
+Auth: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI2Iiwicm9sZSI6IlVTRVIiLCJsb2dpbiI6InRvdm1hc0BtYWlsLnJ1IiwiaWF0IjoxNzAwMTU1MDA3LCJleHAiOjE3MDAxNTg2MDd9.lD786dXPJHn_QMzGHPnVUolAR1YyuYMv6U6HhfBfyEi1-mUCBk6DyDTTLF_-ixt8zOcxx_lbhx82fxy7N2axag
 
 
 
